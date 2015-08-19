@@ -3,9 +3,10 @@
 	#include <stdlib.h>
 	#include <stdarg.h>
 	#include "Graph.h"
+	#include "Interpreter.h"
 	void yyerror(char *);
 	int yylex(void);
-	char **persons;		/* persons table */
+	Context *context;
 	Graph **graph;
 	extern FILE *yyin;
 	extern FILE *yyout;
@@ -33,7 +34,7 @@ program:
 
 
 statement:
-		NAME RELATION NAME 			{addEdge(getNode($1,graph[$2]),getNode($3,graph[$2]) , graph[$2]);}
+		NAME RELATION NAME 			{$$ = createStatement($1,$3,graph[$2]);}
 		;
 
 %%
@@ -48,6 +49,9 @@ int main(int argc,char *argv[])
 {
 	yyin = fopen(argv[1],"r");
 	graph = (Graph**)malloc(sizeof(Graph*)*3);
+	context = (Context*)malloc(sizeof(Context));
+	context->symbols = (Symbol*)malloc(sizeof(Symbol)*100);
+	context->index = 0;
 	graph[0] = createGraph("classmateof");
 	graph[1] = createGraph("friendof");
 	graph[2] = createGraph("roommateof");

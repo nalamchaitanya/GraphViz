@@ -5,30 +5,37 @@
 
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
-typedef void (*ExecFn)(Symbol* context,Statement* st);
+typedef void (*ExecFn)(Context* context,Statement* st);
 
 typedef struct _Symbol
 {
     int type;
     int valid;
+    char *name;
     GNode* gnode;
 }Symbol;
+
+typedef struct _Context
+{
+    Symbol* symbols;
+    int index;
+}Context;
 
 typedef struct _Statement
 {
     Symbol *s1;
     Symbol *s2;
-    int relation;
+    Graph* graph;
     Statement *next;
     Statement *block;
     int type;
     ExecFn  execFn;
 }Statement;
 
-void StmtExecFn(Symbol* context,Statement* stmt);
+void StmtExecFn(Context* context,Statement* stmt);
 
-void IfExecFn(Symbol* context,Statement* stmt);
+void IfExecFn(Context* context,Statement* stmt);
 
-void ForExecFn(Symbol* context,Statement* stmt);
+void ForExecFn(Context* context,Statement* stmt);
 
 #endif
