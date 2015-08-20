@@ -35,7 +35,8 @@ program:
 		| IF VARIABLE RELATION NAME program ENDIF program			{$$ = createIfStatement($2,$4,$5,mainGraph[$3]);$$->next = $7;}
 		| IF NAME RELATION VARIABLE program ENDIF program			{$$ = createIfStatement($2,$4,$5,mainGraph[$3]);$$->next = $7;}
 		| FOREACH VARIABLE RELATION NAME program ENDFOREACH	program {$$ = createForStatement($2,$4,$5,mainGraph[$3]);$$->next = $7;}
-		|	{$$=NULL;}
+		| FOREACH VARIABLE RELATION VARIABLE program ENDFOREACH program	{$$ = createForStatement($2,$4,$5,mainGraph[$3]);$$->next = $7;}
+		|															{$$ = NULL;}
 		;
 
 
@@ -43,6 +44,7 @@ statement:
 		NAME RELATION NAME 			{ $$ = createStatement($1,$3,mainGraph[$2]);}
 		| VARIABLE RELATION NAME	{ $$ = createStatement($1,$3,mainGraph[$2]);}
 		| NAME RELATION VARIABLE	{ $$ = createStatement($1,$3,mainGraph[$2]);}
+		| VARIABLE RELATION VARIABLE{ $$ = createStatement($1,$3,mainGraph[$2]);}
 		;
 
 %%

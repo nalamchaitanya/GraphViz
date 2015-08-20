@@ -3,6 +3,21 @@
 #include "Interpreter.h"
 
 extern Context *context;
+extern Graph** mainGraph;
+
+void synchroniseVariable(char* name,GNode* node,Context* context)
+{
+    int i,index;
+    for(i=0;i<context->index;i++)
+    {
+        if(strcmp(name,context->symbols[i].name)==0)
+        {
+            index = sgn(strcmp(context->symbols[i].relation,"friendof"))+1;
+            context->symbols[i].gnode = getNode(node->name,mainGraph[index]);
+        }
+    }
+    return;
+}
 
 void StmtExecFn(Context* context,Statement* stmt)
 {
@@ -26,13 +41,12 @@ void IfExecFn(Context* context,Statement* stmt)
 
 void ForExecFn(Context* context,Statement* stmt)
 {
-    int *len;
-    *len = 0;
-    GNode** list = getList(stmt->s2->gnode,stmt->graph,len);
+    int len;
+    GNode** list = getList(stmt->s2->gnode,stmt->graph,&len);
     int i;
     for(i=0;i<len;i++)
     {
-        stmt->s1->gnode=list[i];
+        synchroniseVariable(stmt->s1->name,list[i],context);
         stmt->block->execFn(context,stmt->block);
     }
     if(stmt->next!=NULL)

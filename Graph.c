@@ -157,16 +157,17 @@ char* constructStr(char *name1,char *relation,char *name2)
 
 GNode** getList(GNode* node,Graph* graph,int* len)
 {
-	GNode** list = (GNode*)malloc(sizeof(GNode)*100);
+	GNode** list = (GNode**)malloc(sizeof(GNode)*100);
 	int i;
+	*len = 0;
 	for(i=0;i<graph->index;i++)
 	{
 		if(strcmp(node->name,graph->arr[i].name)!=0)
 		{
-			if(isRelation(node->name,graph->arr[i].name,graph)==1)
+			if(isRelation(graph,node->name,graph->arr[i].name)==1)
 			{
 				list[*len] = graph->arr+i;
-				*len++;
+				(*len)++;
 			}
 		}
 	}

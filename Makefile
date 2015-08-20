@@ -3,7 +3,7 @@
 
 CC=gcc
 SH = bash
-CFLAGS = -g -w
+CFLAGS = -g
 LDFLAGS = -lm
 
 all: compiler
