@@ -41,7 +41,7 @@ digit		[0-9]
 				}
 
 	/* ignore whitespace */
-[ \t\n]			;
+[ \t\n\r]			;
 
 	/* gives error */
 .				yyerror("Invalid");

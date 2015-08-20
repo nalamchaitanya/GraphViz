@@ -52,7 +52,8 @@ statement:
 
 void yyerror(char *text)
 {
-	fprintf(stderr,"%s\n",text);
+	printf("ERROR\n");
+	exit(0);
 }
 
 int main(int argc,char *argv[])
