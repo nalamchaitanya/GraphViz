@@ -1,9 +1,8 @@
 # Makefile
-#
 
 CC=gcc
 SH = bash
-CFLAGS = -g
+CFLAGS = -g -w
 LDFLAGS = -lm
 
 all: compiler
@@ -31,3 +30,7 @@ clean:
 	rm -rf lex.yy.c
 	rm -rf y.tab.c y.tab.h
 	rm -rf compiler
+	rm -rf ./testcases/*.output
+
+test: compiler
+	$(SH) testcases/run.sh
