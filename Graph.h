@@ -16,7 +16,7 @@ typedef struct _GNode
 	GNode **neighbours;
 	int length;
 	int check;
-};
+}GNode;
 
 typedef struct _Graph
 {

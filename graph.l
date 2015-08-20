@@ -4,6 +4,8 @@ digit		[0-9]
 %{
     #include <stdlib.h>
     #include <string.h>
+    #include "Graph.h"
+    #include "Interpreter.h"
     #include "y.tab.h"
     extern YYSTYPE yylval;
     void yyerror(char *);
@@ -28,7 +30,7 @@ digit		[0-9]
 
 	/* relations */
 ("friendof"|"classmateof"|"roommateof")	{
-                                        yylval.number = sgn(strcmp("friendof",yytext))+1;
+                                        yylval.number = sgn(strcmp(yytext,"friendof"))+1;
                                         return RELATION;
 									}
 

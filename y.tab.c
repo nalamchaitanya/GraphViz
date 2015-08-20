@@ -67,15 +67,17 @@
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <stdarg.h>
+	#include "Interpreter.h"
 	#include "Graph.h"
 	void yyerror(char *);
 	int yylex(void);
-	char **persons;		/* persons table */
+	Statement* head;
+	Context *context;
 	Graph **graph;
 	extern FILE *yyin;
 	extern FILE *yyout;
 
-#line 79 "y.tab.c" /* yacc.c:339  */
+#line 81 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -133,12 +135,13 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 15 "graph.y" /* yacc.c:355  */
+#line 17 "graph.y" /* yacc.c:355  */
 
 	int number;
 	char* string;
+	Statement* stmt;
 
-#line 142 "y.tab.c" /* yacc.c:355  */
+#line 145 "y.tab.c" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -153,7 +156,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 157 "y.tab.c" /* yacc.c:358  */
+#line 160 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -451,7 +454,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    28,    28,    29,    30,    31,    36
+       0,    33,    33,    38,    39,    40,    45
 };
 #endif
 
@@ -1222,31 +1225,41 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 28 "graph.y" /* yacc.c:1646  */
-    {;}
-#line 1228 "y.tab.c" /* yacc.c:1646  */
+#line 33 "graph.y" /* yacc.c:1646  */
+    {
+																		(yyvsp[-1].stmt)->next=(yyvsp[0].stmt);
+																		(yyval.stmt) = (yyvsp[-1].stmt);
+																		head = (yyval.stmt);
+																	}
+#line 1235 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 29 "graph.y" /* yacc.c:1646  */
+#line 38 "graph.y" /* yacc.c:1646  */
     {;}
-#line 1234 "y.tab.c" /* yacc.c:1646  */
+#line 1241 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 30 "graph.y" /* yacc.c:1646  */
+#line 39 "graph.y" /* yacc.c:1646  */
     {;}
-#line 1240 "y.tab.c" /* yacc.c:1646  */
+#line 1247 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 5:
+#line 40 "graph.y" /* yacc.c:1646  */
+    {(yyval.stmt)=NULL;}
+#line 1253 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 36 "graph.y" /* yacc.c:1646  */
-    {addEdge(getNode((yyvsp[-2].string),graph[(yyvsp[-1].number)]),getNode((yyvsp[0].string),graph[(yyvsp[-1].number)]) , graph[(yyvsp[-1].number)]);}
-#line 1246 "y.tab.c" /* yacc.c:1646  */
+#line 45 "graph.y" /* yacc.c:1646  */
+    { (yyval.stmt) = createStatement((yyvsp[-2].string),(yyvsp[0].string),graph[(yyvsp[-1].number)]);}
+#line 1259 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1250 "y.tab.c" /* yacc.c:1646  */
+#line 1263 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1474,7 +1487,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 39 "graph.y" /* yacc.c:1906  */
+#line 48 "graph.y" /* yacc.c:1906  */
 
 
 
@@ -1487,11 +1500,19 @@ int main(int argc,char *argv[])
 {
 	yyin = fopen(argv[1],"r");
 	graph = (Graph**)malloc(sizeof(Graph*)*3);
+	context = (Context*)malloc(sizeof(Context));
+	context->symbols = (Symbol*)malloc(sizeof(Symbol)*100);
+	context->index = 0;
 	graph[0] = createGraph("classmateof");
 	graph[1] = createGraph("friendof");
 	graph[2] = createGraph("roommateof");
 	printf("graph\n{\n");
 	yyparse();
+	while(head!=NULL)
+	{
+		head->execFn(context,head);
+		head=head->next;
+	}
 	fclose(yyin);
 	int i;
 	for(i=0;i<3;i++)

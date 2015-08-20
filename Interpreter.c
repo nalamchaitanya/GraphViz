@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Interpreter.h"
-#include "Graph.h"
+
 extern Context *context;
 
 void StmtExecFn(Context* context,Statement* stmt)
 {
     addEdge(stmt->s1->gnode,stmt->s2->gnode,stmt->graph);
-    stmt->next->execFn(context,stmt->next);
+    //stmt->next->execFn(context,stmt->next);
     return;
 }
 
@@ -39,7 +39,7 @@ Symbol* getSymbol(char* name, Graph* graph)
             sy->type = 0;
             sy->valid = 1;
             sy->name = name;
-            sy->node = node;
+            sy->gnode = node;
             context->index++;
     	}
         else
@@ -55,7 +55,7 @@ Symbol* getSymbol(char* name, Graph* graph)
             sy->type = 1;
             sy->valid = 1;
             sy->name = name;
-            sy->node = NULL;
+            sy->gnode = NULL;
             context->index++;
         }
     }

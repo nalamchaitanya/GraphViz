@@ -2,10 +2,11 @@
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <stdarg.h>
-	#include "Graph.h"
 	#include "Interpreter.h"
+	#include "Graph.h"
 	void yyerror(char *);
 	int yylex(void);
+	Statement* head;
 	Context *context;
 	Graph **graph;
 	extern FILE *yyin;
@@ -16,25 +17,32 @@
 {
 	int number;
 	char* string;
-}
+	Statement* stmt;
+};
 
 %token <string> NAME
 %token <number> RELATION
 %token <string> VARIABLE
 %token IF ENDIF FOREACH ENDFOREACH
+%type <stmt> statement
+%type <stmt> program
 
 %%
 
 program:
-		statement program 											{;}
+		statement program 											{
+																		$1->next=$2;
+																		$$ = $1;
+																		head = $$;
+																	}
 		| IF NAME RELATION NAME program ENDIF					{;}
 		| FOREACH VARIABLE RELATION NAME program ENDFOREACH	{;}
-		|
+		|	{$$=NULL;}
 		;
 
 
 statement:
-		NAME RELATION NAME 			{$$ = createStatement($1,$3,graph[$2]);}
+		NAME RELATION NAME 			{ $$ = createStatement($1,$3,graph[$2]);}
 		;
 
 %%
@@ -57,6 +65,11 @@ int main(int argc,char *argv[])
 	graph[2] = createGraph("roommateof");
 	printf("graph\n{\n");
 	yyparse();
+	while(head!=NULL)
+	{
+		head->execFn(context,head);
+		head=head->next;
+	}
 	fclose(yyin);
 	int i;
 	for(i=0;i<3;i++)

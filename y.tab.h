@@ -68,12 +68,13 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 15 "graph.y" /* yacc.c:1909  */
+#line 17 "graph.y" /* yacc.c:1909  */
 
 	int number;
 	char* string;
+	Statement* stmt;
 
-#line 77 "y.tab.h" /* yacc.c:1909  */
+#line 78 "y.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

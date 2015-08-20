@@ -496,10 +496,12 @@ char *yytext;
 #line 5 "graph.l"
     #include <stdlib.h>
     #include <string.h>
+    #include "Graph.h"
+    #include "Interpreter.h"
     #include "y.tab.h"
     extern YYSTYPE yylval;
     void yyerror(char *);
-#line 503 "lex.yy.c"
+#line 505 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -686,11 +688,11 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 12 "graph.l"
+#line 14 "graph.l"
 
 
 	/* if condition */
-#line 694 "lex.yy.c"
+#line 696 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -775,28 +777,28 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 15 "graph.l"
+#line 17 "graph.l"
 {return IF;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 17 "graph.l"
+#line 19 "graph.l"
 {return ENDIF;}
 	YY_BREAK
 /* for loop */
 case 3:
 YY_RULE_SETUP
-#line 20 "graph.l"
+#line 22 "graph.l"
 {return FOREACH;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 22 "graph.l"
+#line 24 "graph.l"
 {return ENDFOREACH;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 24 "graph.l"
+#line 26 "graph.l"
 {
                     yylval.string = strdup(yytext);
                     return VARIABLE;
@@ -805,16 +807,16 @@ YY_RULE_SETUP
 /* relations */
 case 6:
 YY_RULE_SETUP
-#line 30 "graph.l"
+#line 32 "graph.l"
 {
-                                        yylval.number = sgn(strcmp("friendof",yytext))+1;
+                                        yylval.number = sgn(strcmp(yytext,"friendof"))+1;
                                         return RELATION;
 									}
 	YY_BREAK
 /* matches any word */
 case 7:
 YY_RULE_SETUP
-#line 36 "graph.l"
+#line 38 "graph.l"
 {
 					yylval.string = strdup(yytext);
                     return NAME;
@@ -824,21 +826,21 @@ YY_RULE_SETUP
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 42 "graph.l"
+#line 44 "graph.l"
 ;
 	YY_BREAK
 /* gives error */
 case 9:
 YY_RULE_SETUP
-#line 45 "graph.l"
+#line 47 "graph.l"
 yyerror("Invalid");
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 47 "graph.l"
+#line 49 "graph.l"
 ECHO;
 	YY_BREAK
-#line 842 "lex.yy.c"
+#line 844 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1836,7 +1838,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 47 "graph.l"
+#line 49 "graph.l"
 
 
 
