@@ -23,7 +23,7 @@ digit		[0-9]
 
 ("endforeach")	{return ENDFOREACH;}
 
-($(letter)+)	{
+([$]{letter}+)	{
                     yylval.string = strdup(yytext);
                     return VARIABLE;
 				}

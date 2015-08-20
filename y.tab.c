@@ -73,7 +73,7 @@
 	int yylex(void);
 	Statement* head;
 	Context *context;
-	Graph **graph;
+	Graph **mainGraph;
 	extern FILE *yyin;
 	extern FILE *yyout;
 
@@ -396,18 +396,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  9
+#define YYFINAL  12
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   19
+#define YYLAST   34
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  10
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  3
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  6
+#define YYNRULES  10
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  20
+#define YYNSTATES  36
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -454,7 +454,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    33,    33,    38,    39,    40,    45
+       0,    33,    33,    34,    35,    36,    37,    38,    43,    44,
+      45
 };
 #endif
 
@@ -477,10 +478,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -6
+#define YYPACT_NINF -7
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-6)))
+  (!!((Yystate) == (-7)))
 
 #define YYTABLE_NINF -1
 
@@ -491,8 +492,10 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -2,    -1,     2,    -3,     7,    -2,     5,     8,     9,    -6,
-      -6,    -6,    11,    12,    -2,    -2,     4,    10,    -6,    -6
+      -2,     8,     9,     2,    -3,    18,    -2,     5,    16,    17,
+      22,    23,    -7,    -7,    -7,    -7,    -7,     6,    25,    26,
+      -2,    -2,    -2,    -2,    13,    24,    27,    21,    -2,    -2,
+      -2,    -2,    -7,    -7,    -7,    -7
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -500,20 +503,22 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       5,     0,     0,     0,     0,     5,     0,     0,     0,     1,
-       2,     6,     0,     0,     5,     5,     0,     0,     3,     4
+       7,     0,     0,     0,     0,     0,     7,     0,     0,     0,
+       0,     0,     1,     2,     8,    10,     9,     0,     0,     0,
+       7,     7,     7,     7,     0,     0,     0,     0,     7,     7,
+       7,     7,     3,     5,     4,     6
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -6,    -5,    -6
+      -7,    -6,    -7
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     4,     5
+      -1,     5,     6
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -521,34 +526,42 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      10,     1,     8,     6,     2,     7,     3,     9,    11,    16,
-      17,    18,    12,    13,    14,    15,     0,     0,     0,    19
+      13,     1,    11,     2,     3,     9,     4,    10,    14,    20,
+      15,    21,     7,     8,    24,    25,    26,    27,    12,    16,
+      28,    17,    32,    33,    34,    35,    18,    19,    22,    23,
+      31,    29,     0,     0,    30
 };
 
 static const yytype_int8 yycheck[] =
 {
-       5,     3,     5,     4,     6,     3,     8,     0,     3,    14,
-      15,     7,     4,     4,     3,     3,    -1,    -1,    -1,     9
+       6,     3,     5,     5,     6,     3,     8,     5,     3,     3,
+       5,     5,     4,     4,    20,    21,    22,    23,     0,     3,
+       7,     4,    28,    29,    30,    31,     4,     4,     3,     3,
+       9,     7,    -1,    -1,     7
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,     6,     8,    11,    12,     4,     3,     5,     0,
-      11,     3,     4,     4,     3,     3,    11,    11,     7,     9
+       0,     3,     5,     6,     8,    11,    12,     4,     4,     3,
+       5,     5,     0,    11,     3,     5,     3,     4,     4,     4,
+       3,     5,     3,     3,    11,    11,    11,    11,     7,     7,
+       7,     9,    11,    11,    11,    11
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    10,    11,    11,    11,    11,    12
+       0,    10,    11,    11,    11,    11,    11,    11,    12,    12,
+      12
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     6,     6,     0,     3
+       0,     2,     2,     7,     7,     7,     7,     0,     3,     3,
+       3
 };
 
 
@@ -1226,40 +1239,60 @@ yyreduce:
     {
         case 2:
 #line 33 "graph.y" /* yacc.c:1646  */
-    {
-																		(yyvsp[-1].stmt)->next=(yyvsp[0].stmt);
-																		(yyval.stmt) = (yyvsp[-1].stmt);
-																		head = (yyval.stmt);
-																	}
-#line 1235 "y.tab.c" /* yacc.c:1646  */
+    {(yyvsp[-1].stmt)->next=(yyvsp[0].stmt);(yyval.stmt) = (yyvsp[-1].stmt);head = (yyval.stmt);}
+#line 1244 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 38 "graph.y" /* yacc.c:1646  */
-    {;}
-#line 1241 "y.tab.c" /* yacc.c:1646  */
+#line 34 "graph.y" /* yacc.c:1646  */
+    {(yyval.stmt) = createIfStatement((yyvsp[-5].string),(yyvsp[-3].string),(yyvsp[-2].stmt),mainGraph[(yyvsp[-4].number)]);(yyval.stmt)->next = (yyvsp[0].stmt);}
+#line 1250 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 39 "graph.y" /* yacc.c:1646  */
-    {;}
-#line 1247 "y.tab.c" /* yacc.c:1646  */
+#line 35 "graph.y" /* yacc.c:1646  */
+    {(yyval.stmt) = createIfStatement((yyvsp[-5].string),(yyvsp[-3].string),(yyvsp[-2].stmt),mainGraph[(yyvsp[-4].number)]);(yyval.stmt)->next = (yyvsp[0].stmt);}
+#line 1256 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 40 "graph.y" /* yacc.c:1646  */
-    {(yyval.stmt)=NULL;}
-#line 1253 "y.tab.c" /* yacc.c:1646  */
+#line 36 "graph.y" /* yacc.c:1646  */
+    {(yyval.stmt) = createIfStatement((yyvsp[-5].string),(yyvsp[-3].string),(yyvsp[-2].stmt),mainGraph[(yyvsp[-4].number)]);(yyval.stmt)->next = (yyvsp[0].stmt);}
+#line 1262 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
+#line 37 "graph.y" /* yacc.c:1646  */
+    {(yyval.stmt) = createForStatement((yyvsp[-5].string),(yyvsp[-3].string),(yyvsp[-2].stmt),mainGraph[(yyvsp[-4].number)]);(yyval.stmt)->next = (yyvsp[0].stmt);}
+#line 1268 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 7:
+#line 38 "graph.y" /* yacc.c:1646  */
+    {(yyval.stmt)=NULL;}
+#line 1274 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 8:
+#line 43 "graph.y" /* yacc.c:1646  */
+    { (yyval.stmt) = createStatement((yyvsp[-2].string),(yyvsp[0].string),mainGraph[(yyvsp[-1].number)]);}
+#line 1280 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 9:
+#line 44 "graph.y" /* yacc.c:1646  */
+    { (yyval.stmt) = createStatement((yyvsp[-2].string),(yyvsp[0].string),mainGraph[(yyvsp[-1].number)]);}
+#line 1286 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 10:
 #line 45 "graph.y" /* yacc.c:1646  */
-    { (yyval.stmt) = createStatement((yyvsp[-2].string),(yyvsp[0].string),graph[(yyvsp[-1].number)]);}
-#line 1259 "y.tab.c" /* yacc.c:1646  */
+    { (yyval.stmt) = createStatement((yyvsp[-2].string),(yyvsp[0].string),mainGraph[(yyvsp[-1].number)]);}
+#line 1292 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1263 "y.tab.c" /* yacc.c:1646  */
+#line 1296 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1499,25 +1532,21 @@ void yyerror(char *text)
 int main(int argc,char *argv[])
 {
 	yyin = fopen(argv[1],"r");
-	graph = (Graph**)malloc(sizeof(Graph*)*3);
+	mainGraph = (Graph**)malloc(sizeof(Graph*)*3);
 	context = (Context*)malloc(sizeof(Context));
 	context->symbols = (Symbol*)malloc(sizeof(Symbol)*100);
 	context->index = 0;
-	graph[0] = createGraph("classmateof");
-	graph[1] = createGraph("friendof");
-	graph[2] = createGraph("roommateof");
+	mainGraph[0] = createGraph("classmateof");
+	mainGraph[1] = createGraph("friendof");
+	mainGraph[2] = createGraph("roommateof");
 	printf("graph\n{\n");
 	yyparse();
-	while(head!=NULL)
-	{
-		head->execFn(context,head);
-		head=head->next;
-	}
+	head->execFn(context,head);
 	fclose(yyin);
 	int i;
 	for(i=0;i<3;i++)
 	{
-		printGraph(graph[i]);
+		printGraph(mainGraph[i]);
 		printf("\n");
 	}
 	printf("}\n");

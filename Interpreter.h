@@ -15,6 +15,7 @@ typedef struct _Symbol
     int valid;
     char *name;
     GNode* gnode;
+    char* relation;
 }Symbol;
 
 typedef struct _Context
@@ -49,6 +50,6 @@ Statement* createStatement(char* name1,char* name2,Graph* graph);
 
 Symbol* getSymbol(char* name, Graph* graph);
 
-Symbol* checkSymbol(char* name,Context *context);
+Symbol* checkSymbol(char* name,Graph* graph,Context *context);
 
 #endif

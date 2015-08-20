@@ -154,3 +154,21 @@ char* constructStr(char *name1,char *relation,char *name2)
 	//printf("%s\n",str );
 	return str;
 }
+
+GNode** getList(GNode* node,Graph* graph,int* len)
+{
+	GNode** list = (GNode*)malloc(sizeof(GNode)*100);
+	int i;
+	for(i=0;i<graph->index;i++)
+	{
+		if(strcmp(node->name,graph->arr[i].name)!=0)
+		{
+			if(isRelation(node->name,graph->arr[i].name,graph)==1)
+			{
+				list[*len] = graph->arr+i;
+				*len++;
+			}
+		}
+	}
+	return list;
+}

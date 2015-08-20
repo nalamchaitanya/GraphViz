@@ -8,7 +8,7 @@
 	int yylex(void);
 	Statement* head;
 	Context *context;
-	Graph **graph;
+	Graph **mainGraph;
 	extern FILE *yyin;
 	extern FILE *yyout;
 %}
@@ -30,19 +30,19 @@
 %%
 
 program:
-		statement program 											{
-																		$1->next=$2;
-																		$$ = $1;
-																		head = $$;
-																	}
-		| IF NAME RELATION NAME program ENDIF					{;}
-		| FOREACH VARIABLE RELATION NAME program ENDFOREACH	{;}
+		statement program 											{$1->next=$2;$$ = $1;head = $$;}
+		| IF NAME RELATION NAME program ENDIF program				{$$ = createIfStatement($2,$4,$5,mainGraph[$3]);$$->next = $7;}
+		| IF VARIABLE RELATION NAME program ENDIF program			{$$ = createIfStatement($2,$4,$5,mainGraph[$3]);$$->next = $7;}
+		| IF NAME RELATION VARIABLE program ENDIF program			{$$ = createIfStatement($2,$4,$5,mainGraph[$3]);$$->next = $7;}
+		| FOREACH VARIABLE RELATION NAME program ENDFOREACH	program {$$ = createForStatement($2,$4,$5,mainGraph[$3]);$$->next = $7;}
 		|	{$$=NULL;}
 		;
 
 
 statement:
-		NAME RELATION NAME 			{ $$ = createStatement($1,$3,graph[$2]);}
+		NAME RELATION NAME 			{ $$ = createStatement($1,$3,mainGraph[$2]);}
+		| VARIABLE RELATION NAME	{ $$ = createStatement($1,$3,mainGraph[$2]);}
+		| NAME RELATION VARIABLE	{ $$ = createStatement($1,$3,mainGraph[$2]);}
 		;
 
 %%
@@ -56,25 +56,21 @@ void yyerror(char *text)
 int main(int argc,char *argv[])
 {
 	yyin = fopen(argv[1],"r");
-	graph = (Graph**)malloc(sizeof(Graph*)*3);
+	mainGraph = (Graph**)malloc(sizeof(Graph*)*3);
 	context = (Context*)malloc(sizeof(Context));
 	context->symbols = (Symbol*)malloc(sizeof(Symbol)*100);
 	context->index = 0;
-	graph[0] = createGraph("classmateof");
-	graph[1] = createGraph("friendof");
-	graph[2] = createGraph("roommateof");
+	mainGraph[0] = createGraph("classmateof");
+	mainGraph[1] = createGraph("friendof");
+	mainGraph[2] = createGraph("roommateof");
 	printf("graph\n{\n");
 	yyparse();
-	while(head!=NULL)
-	{
-		head->execFn(context,head);
-		head=head->next;
-	}
+	head->execFn(context,head);
 	fclose(yyin);
 	int i;
 	for(i=0;i<3;i++)
 	{
-		printGraph(graph[i]);
+		printGraph(mainGraph[i]);
 		printf("\n");
 	}
 	printf("}\n");
