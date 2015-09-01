@@ -33,4 +33,4 @@ clean:
 	rm -rf ./testcases/*.output
 
 test: compiler
-	$(SH) testcases/run.sh
+	$(SH) ../eval.sh ./compiler testcases

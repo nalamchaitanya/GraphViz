@@ -66,8 +66,8 @@ int main(int argc,char *argv[])
 	mainGraph[0] = createGraph("classmateof");
 	mainGraph[1] = createGraph("friendof");
 	mainGraph[2] = createGraph("roommateof");
-	printf("graph\n{\n");
 	yyparse();
+	printf("graph\n{\n");
 	head->execFn(context,head);
 	fclose(yyin);
 	int i;
